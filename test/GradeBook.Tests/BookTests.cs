@@ -13,8 +13,6 @@ namespace GradeBook.Tests
             book.AddGrade(89.1);
             book.AddGrade(90.5);
             book.AddGrade(77.3);
-            book.AddGrade(109.2);
-            book.AddGrade(-5.0);
         //When
             var result = book.GetStatistics();
         //Then
@@ -28,7 +26,7 @@ namespace GradeBook.Tests
         public void BookCalculateAnAverageGrade()
         {
             // arrange
-            var book = new Book("");
+            var book = new Book("Book");
             book.AddGrade(89.1);
             book.AddGrade(90.5);
             book.AddGrade(77.3);

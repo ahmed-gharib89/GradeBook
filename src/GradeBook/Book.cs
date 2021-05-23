@@ -1,8 +1,12 @@
+using System.Data;
+using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 
 namespace GradeBook
 {
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
+
     public class Book
     {
         public Book(string name)
@@ -11,7 +15,7 @@ namespace GradeBook
             Name = name;
         }
 
-        public void AddLetterGrade(char letter)
+        public void AddGrade(char letter)
         {
             switch (letter)
             {
@@ -35,12 +39,19 @@ namespace GradeBook
             if (grade >= 0 && grade <= 100)
             {
                 grades.Add(grade);
+
+                if (GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else
             {
-                Console.WriteLine($"{grade} is invalid input\ngrade should be a number between 0 and 100");
+                throw new ArgumentException($"Invalid {nameof(grade)}");
             }
         }
+
+        public event GradeAddedDelegate GradeAdded;
 
         public Statistics GetStatistics()
         {
@@ -90,15 +101,28 @@ namespace GradeBook
             Console.WriteLine($"The highest grade is: {result.High:N}");
             Console.WriteLine($"The lowest grade is: {result.Low:N}");
             Console.WriteLine($"The letter grade is: {result.Letter}");
-
         }
 
-        public string GetName()
+        public string Name
         {
-            return Name;
+            get 
+            { 
+                return name; 
+            }
+            set
+            {
+                if (!String.IsNullOrEmpty(value))
+                {
+                    name = value;
+                }
+                else
+                {
+                    throw new NoNullAllowedException("Book name can't be empty string");
+                }
+            }
         }
 
         private List<double> grades;
-        public string Name;
+        private string name;
     }
 }

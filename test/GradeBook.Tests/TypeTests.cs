@@ -3,8 +3,38 @@ using Xunit;
 
 namespace GradeBook.Tests
 {
+    public delegate string WriteLogDelegate(string logMessage);
     public class TypeTests
     {
+        int counter = 0;
+
+        [Fact]
+        public void WriteLogDelegateCanPointToMethod()
+        {
+        //Given
+            WriteLogDelegate log = ReturnMessage;
+
+            log += ReturnMessage;
+            log += ReturnMessage2;
+        //When
+            var result = log("Hello");
+        //Then
+            Assert.Equal(3, counter);
+            Assert.Equal("Hello", result);
+        }
+
+        string ReturnMessage(string message)
+        {
+            counter += 1;
+            return message;
+        }
+
+        string ReturnMessage2(string message)
+        {
+            counter += 1;
+            return message;
+        }
+
         [Fact]
         public void StringBehaveLikeValueTypes()
         {
@@ -113,8 +143,8 @@ namespace GradeBook.Tests
 
 
             // assert
-            Assert.Equal("Book 1", book1.GetName());
-            Assert.Equal("Book 2", book2.GetName());
+            Assert.Equal("Book 1", book1.Name);
+            Assert.Equal("Book 2", book2.Name);
             Assert.NotSame(book1, book2);
         }
 

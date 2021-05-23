@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Reflection;
+using System;
 using System.Collections.Generic;
 
 namespace GradeBook
@@ -9,14 +10,46 @@ namespace GradeBook
         {
 
             var book = new Book("Gharib Grade Book");
-            book.AddGrade(89.2);
-            book.AddGrade(90.2);
-            book.AddGrade(77.5);
-            book.AddGrade(105.2);
-            Console.WriteLine($"Book name is: {book.GetName()}");
+            book.GradeAdded += OneGradeAdded;
+            book.GradeAdded += OneGradeAdded;
+            book.GradeAdded -= OneGradeAdded;
+            book.GradeAdded += OneGradeAdded;
+            
+            while (true)
+            {
+                Console.WriteLine("Please enter a grade or Q to quit");
+                var input = Console.ReadLine();
+                if (input.ToLower() == "q"  || input.ToLower() == "quit")
+                {
+                    break;
+                }
+                try
+                {
+                    var grade = double.Parse(input);
+                    book.AddGrade(grade);
+                }
+                catch (ArgumentException ex)
+                {
+                     Console.WriteLine(ex.Message);
+                }
+                catch (FormatException ex)
+                {
+                     Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    Console.WriteLine("***********");
+                }
+            }
+
+            Console.WriteLine($"for book named: {book.Name}");
             var result = book.GetStatistics();
             book.ShowStatistics(result);
 
+        }
+        static void OneGradeAdded(object sender, EventArgs e)
+        {
+            Console.WriteLine("A Grade was added");
         }
     }
 }
