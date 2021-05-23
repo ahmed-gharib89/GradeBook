@@ -12,6 +12,7 @@ namespace GradeBook
             book.AddGrade(89.2);
             book.AddGrade(90.2);
             book.AddGrade(77.5);
+            book.AddGrade(105.2);
             Console.WriteLine($"Book name is: {book.GetName()}");
             var result = book.GetStatistics();
             book.ShowStatistics(result);
