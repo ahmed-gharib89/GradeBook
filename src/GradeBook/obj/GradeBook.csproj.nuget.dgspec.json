@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\first-project\\src\\GradeBook\\GradeBook.csproj": {}
+    "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\GradeBook\\src\\GradeBook\\GradeBook.csproj": {}
   },
   "projects": {
-    "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\first-project\\src\\GradeBook\\GradeBook.csproj": {
+    "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\GradeBook\\src\\GradeBook\\GradeBook.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\first-project\\src\\GradeBook\\GradeBook.csproj",
+        "projectUniqueName": "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\GradeBook\\src\\GradeBook\\GradeBook.csproj",
         "projectName": "GradeBook",
-        "projectPath": "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\first-project\\src\\GradeBook\\GradeBook.csproj",
+        "projectPath": "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\GradeBook\\src\\GradeBook\\GradeBook.csproj",
         "packagesPath": "C:\\Users\\aghar\\.nuget\\packages\\",
-        "outputPath": "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\first-project\\src\\GradeBook\\obj\\",
+        "outputPath": "D:\\1- Study\\In-progress\\C#\\csharp-fundamentals-dev\\GradeBook\\src\\GradeBook\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\aghar\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -21,7 +21,8 @@
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net5.0": {
