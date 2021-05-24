@@ -9,17 +9,24 @@ namespace GradeBook
         static void Main(string[] args)
         {
 
-            var book = new Book("Gharib Grade Book");
+            var book = new InMemoryBook("Gharib Grade Book");
             book.GradeAdded += OneGradeAdded;
-            book.GradeAdded += OneGradeAdded;
-            book.GradeAdded -= OneGradeAdded;
-            book.GradeAdded += OneGradeAdded;
-            
+
+            EnterGrade(book);
+
+            Console.WriteLine($"for book named: {book.Name}");
+            var result = book.GetStatistics();
+            book.ShowStatistics(result);
+
+        }
+
+        private static void EnterGrade(IBook book)
+        {
             while (true)
             {
                 Console.WriteLine("Please enter a grade or Q to quit");
                 var input = Console.ReadLine();
-                if (input.ToLower() == "q"  || input.ToLower() == "quit")
+                if (input.ToLower() == "q" || input.ToLower() == "quit")
                 {
                     break;
                 }
@@ -30,23 +37,19 @@ namespace GradeBook
                 }
                 catch (ArgumentException ex)
                 {
-                     Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.Message);
                 }
                 catch (FormatException ex)
                 {
-                     Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.Message);
                 }
                 finally
                 {
                     Console.WriteLine("***********");
                 }
             }
-
-            Console.WriteLine($"for book named: {book.Name}");
-            var result = book.GetStatistics();
-            book.ShowStatistics(result);
-
         }
+
         static void OneGradeAdded(object sender, EventArgs e)
         {
             Console.WriteLine("A Grade was added");
