@@ -1,7 +1,6 @@
-using System.Data;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GradeBook
 {
@@ -25,6 +24,7 @@ namespace GradeBook
     {
         void AddGrade(double grade);
         Statistics GetStatistics();
+        void ShowStatistics(Statistics result);
         string Name { get;}
         event GradeAddedDelegate GradeAdded;
     }
@@ -36,14 +36,13 @@ namespace GradeBook
             
         }
 
-        public virtual event GradeAddedDelegate GradeAdded;
+        public abstract event GradeAddedDelegate GradeAdded;
 
         public abstract void AddGrade(double grade);
 
-        public virtual Statistics GetStatistics()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Statistics GetStatistics();
+
+        public abstract void ShowStatistics(Statistics result);
     }
 
     public class InMemoryBook : Book
@@ -95,46 +94,15 @@ namespace GradeBook
         public override Statistics GetStatistics()
         {
             var result = new Statistics();
-            result.Average = 0.0;
-            result.High = double.MinValue;
-            result.Low = double.MaxValue;
 
             for (var i = 0; i < grades.Count; i++)
             {
-                result.High = Math.Max(grades[i], result.High);
-                result.Low = Math.Min(grades[i], result.Low);
-                result.Average += grades[i];
-            }
-
-            result.Average /= grades.Count;
-
-            switch(result.Average)
-            {
-                case var d when d >= 90.0:
-                    result.Letter = 'A';
-                    break;
-                    
-                case var d when d >= 80.0:
-                    result.Letter = 'B';
-                    break;
-
-                case var d when d >= 70.0:
-                    result.Letter = 'C';
-                    break;
-
-                case var d when d >= 60.0:
-                    result.Letter = 'D';
-                    break;
-
-                default:
-                    result.Letter = 'F';
-                    break;
+                result.Add(grades[i]);
             }
 
             return result;
         }
-
-        public void ShowStatistics(Statistics result)
+        public override void ShowStatistics(Statistics result)
         {
             Console.WriteLine($"The average grade is: {result.Average:N1}");
             Console.WriteLine($"The highest grade is: {result.High:N}");
@@ -144,4 +112,61 @@ namespace GradeBook
 
         private List<double> grades;
     }
+
+
+    public class DiskBook : Book
+    {
+        public DiskBook(string name) : base(name)
+        {
+            Name = name;
+        }
+
+        public override event GradeAddedDelegate GradeAdded;
+        public override void AddGrade(double grade)
+        {
+            if (grade >= 0 && grade <= 100)
+            {
+                using(var writer = File.AppendText($"{Name}.txt"))
+                {
+                    writer.WriteLine(grade);
+                }
+                
+                if (GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid {nameof(grade)}");
+            }
+        }
+
+        public override Statistics GetStatistics()
+        {
+            var result = new Statistics();
+
+            using(var reader = File.OpenText($"{Name}.txt"))
+            {
+                while(true)
+                {
+                    if (reader.ReadLine() == null)
+                    {
+                        break;
+                    }
+                    var grade = double.Parse(reader.ReadLine());
+                    result.Add(grade);
+                }
+            }
+            return result;
+        }
+        public override void ShowStatistics(Statistics result)
+        {
+            Console.WriteLine($"The average grade is: {result.Average:N1}");
+            Console.WriteLine($"The highest grade is: {result.High:N}");
+            Console.WriteLine($"The lowest grade is: {result.Low:N}");
+            Console.WriteLine($"The letter grade is: {result.Letter}");
+        }
+    }
+
 }
